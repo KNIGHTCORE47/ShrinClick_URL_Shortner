@@ -1,6 +1,9 @@
 import React from 'react'
 import { Loader2, Eye, EyeOff } from 'lucide-react';
 import { loginUser } from '../apis/apiCalls';
+import { useNavigate } from '@tanstack/react-router';
+import { useSelector, useDispatch } from 'react-redux';
+import { login } from '../store/slice/authSlice.js';
 
 export default function RegisterForm() {
     const [email, setEmail] = React.useState('');
@@ -9,20 +12,36 @@ export default function RegisterForm() {
     const [error, setError] = React.useState('');
     const [isPasswordVisible, setIsPasswordVisible] = React.useState(false);
 
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const auth = useSelector(state => state.auth);
+    console.log("from LoginForm isAuthenticated: ", auth);
+
+
+
+
     async function handleSubmit(event) {
         event.preventDefault();
         setSubmitting(true);
         setError(null);
 
         try {
-            const response = await loginUser(email, password);
-            const data = await response.json();
+            const data = await loginUser(email, password);
+
+            console.log("Login API Response:", data);
+
+            // NOTE - Set Store Data
+            const user = dispatch(login(data.data));
+
+            console.log("from LoginForm user: ", user);
 
             // NOTE - Set Input Fields to Empty
             setEmail('');
             setPassword('');
 
-            console.log("API Response:", data.message);
+            // NOTE - Redirect to Home Page
+            navigate({ to: '/' });
 
         } catch (error) {
             console.error("Internal server error, Please try again sometime.", error);
