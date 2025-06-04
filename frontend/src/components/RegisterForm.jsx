@@ -5,12 +5,12 @@ import { useNavigate } from '@tanstack/react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { login } from '../store/slice/authSlice.js';
 
-export default function LoginForm() {
+export default function RegisterForm() {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [confirmPassword, setConfirmPassword] = React.useState('');
-    const [submitting, setSubmitting] = React.useState('');
-    const [error, setError] = React.useState('');
+    const [submitting, setSubmitting] = React.useState(false);
+    const [error, setError] = React.useState(null);
     const [isPasswordVisible, setIsPasswordVisible] = React.useState(false);
     const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = React.useState(false);
 
@@ -33,7 +33,10 @@ export default function LoginForm() {
         setError(null);
 
         try {
-            const data = await registerUser(email, password);
+            const response = await registerUser(email, password);
+
+            // NOTE - Parse response
+            const data = await response.json();
 
             console.log("Register API Response:", data);
 
@@ -43,6 +46,7 @@ export default function LoginForm() {
             // NOTE - Set Input Fields to Empty
             setEmail('');
             setPassword('');
+            setConfirmPassword('');
 
             // NOTE - Redirect to Home Page
             navigate({ to: '/' });
@@ -54,6 +58,8 @@ export default function LoginForm() {
 
             if (error instanceof Error) {
                 setError(error.message || "Internal server error, Please try again sometime.");
+            } else {
+                setError("Internal server error, Please try again sometime.");
             }
 
         } finally {
