@@ -1,6 +1,9 @@
 import React from 'react'
 import { Loader2, Eye, EyeOff } from 'lucide-react';
 import { registerUser } from '../apis/apiCalls.js';
+import { useNavigate } from '@tanstack/react-router';
+import { useSelector, useDispatch } from 'react-redux';
+import { login } from '../store/slice/authSlice.js';
 
 export default function LoginForm() {
     const [email, setEmail] = React.useState('');
@@ -10,6 +13,12 @@ export default function LoginForm() {
     const [error, setError] = React.useState('');
     const [isPasswordVisible, setIsPasswordVisible] = React.useState(false);
     const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = React.useState(false);
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const auth = useSelector(state => state.auth);
+    console.log("from RegisterForm isAuthenticated: ", auth);
+
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -24,12 +33,19 @@ export default function LoginForm() {
         setError(null);
 
         try {
-            const response = await registerUser(email, password);
-            const data = await response.json();
+            const data = await registerUser(email, password);
+
+            console.log("Register API Response:", data);
+
+            // NOTE - Set Store Data
+            dispatch(login(data.data));
 
             // NOTE - Set Input Fields to Empty
             setEmail('');
             setPassword('');
+
+            // NOTE - Redirect to Home Page
+            navigate({ to: '/' });
 
             console.log("API Response:", data.message);
 
