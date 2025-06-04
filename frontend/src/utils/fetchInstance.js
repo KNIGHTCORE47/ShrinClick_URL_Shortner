@@ -30,7 +30,7 @@ export async function fetchInstance(endpoint, options = {}, baseAPI = 'auth') {
         } catch {
             // NOTE - Set error message if response is not JSON
             errorResponse = {
-                message: response.message || response.statusText
+                message: response.message || response.statusText || 'Something went wrong. Please try again.'
             }
         }
 
