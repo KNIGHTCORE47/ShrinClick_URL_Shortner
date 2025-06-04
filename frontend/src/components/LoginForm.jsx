@@ -5,11 +5,11 @@ import { useNavigate } from '@tanstack/react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { login } from '../store/slice/authSlice.js';
 
-export default function RegisterForm() {
+export default function LoginForm() {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
-    const [submitting, setSubmitting] = React.useState('');
-    const [error, setError] = React.useState('');
+    const [submitting, setSubmitting] = React.useState(false);
+    const [error, setError] = React.useState(null);
     const [isPasswordVisible, setIsPasswordVisible] = React.useState(false);
 
 
@@ -27,7 +27,10 @@ export default function RegisterForm() {
         setError(null);
 
         try {
-            const data = await loginUser(email, password);
+            const response = await loginUser(email, password);
+
+            // NOTE - Parse response
+            const data = await response.json();
 
             console.log("Login API Response:", data);
 
@@ -48,6 +51,8 @@ export default function RegisterForm() {
 
             if (error instanceof Error) {
                 setError(error.message || "Internal server error, Please try again sometime.");
+            } else {
+                setError("Internal server error, Please try again sometime.");
             }
 
         } finally {
