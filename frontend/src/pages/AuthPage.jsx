@@ -28,7 +28,7 @@ export default function AuthPage() {
                     showLogin ?
                         <>
                             Don&apos;t have an account? <span
-                                className='text-zinc-600 hover:text-zinc-800'
+                                className='text-blue-600 hover:text-blue-800 hover:underline'
                                 onClick={() => setShowLogin(false)}
                             >
                                 Register
@@ -37,7 +37,7 @@ export default function AuthPage() {
                         :
                         <>
                             Already have an account? <span
-                                className='text-zinc-600 hover:text-zinc-800' onClick={() => setShowLogin(true)}
+                                className='text-blue-600 hover:text-blue-800 hover:underline' onClick={() => setShowLogin(true)}
                             >
                                 Login
                             </span>
