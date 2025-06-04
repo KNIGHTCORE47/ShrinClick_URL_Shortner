@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { checkAuth } from './apis/apiCalls.js';
 import { login, logout } from './store/slice/authSlice.js';
 import { useQueryClient } from '@tanstack/react-query';
+import Navbar from './components/Navbar.jsx';
 
 
 
@@ -37,11 +38,14 @@ export default function App() {
   }, [dispatch, queryClient]);
 
   return (
-    <div
-      className='min-h-screen flex items-center justify-center bg-zinc-700'
-    >
-      <Outlet />
-    </div>
+    <>
+      <Navbar />
+      <div
+        className='min-h-screen flex items-center justify-center bg-zinc-700'
+      >
+        <Outlet />
+      </div>
+    </>
   )
 }
 
