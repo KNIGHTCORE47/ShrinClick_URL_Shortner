@@ -20,28 +20,26 @@ export async function checkAuth() {
     return await response.json();
 }
 
-export async function registerUser(email, password) {
-    const response = fetchInstance('register', {
+export function registerUser(email, password) {
+    return fetchInstance('register', {
         method: 'POST',
         body: JSON.stringify({
             email,
             password
         })
     });
-
-    return await response.json();
 }
-export async function loginUser(email, password) {
-    const response = fetchInstance('login', {
+
+export function loginUser(email, password) {
+    return fetchInstance('login', {
         method: 'POST',
         body: JSON.stringify({
             email,
             password
         })
     });
-
-    return await response.json();
 }
+
 export function logoutUser() {
     return fetchInstance('logout', {
         method: 'POST',
