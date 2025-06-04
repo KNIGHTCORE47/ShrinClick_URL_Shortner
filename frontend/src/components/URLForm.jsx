@@ -1,7 +1,7 @@
 import React from 'react'
 import { Loader2, CircleCheck } from 'lucide-react';
-// import { SERVER_URL } from '../../constant.js';
 import { fetchShortUrl } from '../apis/apiCalls.js';
+import { useSelector } from 'react-redux';
 
 export default function URLForm() {
 
@@ -9,7 +9,12 @@ export default function URLForm() {
     const [shortURL, setShortURL] = React.useState(null);
     const [error, setError] = React.useState(null);
     const [submitting, setSubmitting] = React.useState(false);
+    const [customSlug, setCustomSlug] = React.useState('');
     const [isCopied, setIsCopied] = React.useState(false);
+
+    const auth = useSelector(state => state.auth);
+    console.log("from URLForm isAuthenticated: ", auth.isAuthenticated);
+
 
 
     async function handleSubmit(event) {
@@ -25,11 +30,16 @@ export default function URLForm() {
         setError(null);
 
         try {
-            const response = await fetchShortUrl(longURL);
+            const response = await fetchShortUrl(longURL, customSlug);
+
+            // NOTE - 
 
             // NOTE - Set Data
             const data = await response.json();
-            setShortURL(data.data);
+
+            console.log("Short URL API Response:", data.data);
+
+            setShortURL(data?.data);
 
         } catch (error) {
             console.error("Internal server error, Please try again sometime.", error);
@@ -52,8 +62,6 @@ export default function URLForm() {
             setIsCopied(false);
         }, 2000);
     }
-
-
 
     return (
         <>
@@ -110,6 +118,40 @@ export default function URLForm() {
                         We'll automatically add https:// if needed
                     </p>
                 </div>
+
+
+                {auth.isAuthenticated && (
+                    <div
+                        className='space-y-2'
+                    >
+                        <label
+                            htmlFor='short-url'
+                            className='block text-sm font-semibold text-gray-700 mb-2'
+                        >
+                            🎉 Custom URL (optional)
+                        </label>
+
+                        <div
+                            className='relative group'
+                        >
+                            <input
+                                type='text'
+                                id='customSlug'
+                                value={customSlug}
+                                onChange={event => setCustomSlug(event.target.value)}
+                                className='w-full pl-8 pr-4 py-3 border-2 border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-blue-400 focus:outline-none transition-all duration-200 text-gray-700 placeholder-gray-400 shadow-sm hover:shadow-md focus:shadow-lg'
+                                placeholder='custom-url'
+                                required
+                            />
+                            <div
+                                className='absolute inset-0 rounded-xl bg-gradient-to-r from-blue-400/10 to-purple-400/10 opacity-0 group-focus-within:opacity-100 transition-opacity duration-300 pointer-events-none'
+                            >
+                            </div>
+
+                        </div>
+
+                    </div>
+                )}
 
                 <button
                     type='submit'
