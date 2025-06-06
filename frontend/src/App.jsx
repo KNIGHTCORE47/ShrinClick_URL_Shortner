@@ -38,14 +38,16 @@ export default function App() {
   }, [dispatch, queryClient]);
 
   return (
-    <>
+    <main
+      className='min-h-screen bg-zinc-700'
+    >
       <Navbar />
       <div
-        className='min-h-screen flex items-center justify-center bg-zinc-700'
+        className='min-h-[calc(100vh-78px)] flex items-center justify-center'
       >
         <Outlet />
       </div>
-    </>
+    </main>
   )
 }
 
