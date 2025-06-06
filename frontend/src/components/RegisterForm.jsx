@@ -17,8 +17,6 @@ export default function RegisterForm() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const auth = useSelector(state => state.auth);
-    console.log("from RegisterForm isAuthenticated: ", auth);
-
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -38,8 +36,6 @@ export default function RegisterForm() {
             // NOTE - Parse response
             const data = await response.json();
 
-            console.log("Register API Response:", data);
-
             // NOTE - Set Store Data
             dispatch(login(data.data));
 
@@ -50,8 +46,6 @@ export default function RegisterForm() {
 
             // NOTE - Redirect to Home Page
             navigate({ to: '/' });
-
-            console.log("API Response:", data.message);
 
         } catch (error) {
             console.error("Internal server error, Please try again sometime.", error);
@@ -66,7 +60,6 @@ export default function RegisterForm() {
             setSubmitting(false);
         }
     }
-
 
 
     return (
