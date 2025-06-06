@@ -55,8 +55,8 @@ export const redirectFromShortUrl = catchAsync(async function (request, response
 })
 
 
-export const getAllUrls = catchAsync(async function (request, response) {
-    const userId = request.user.userId;
+export const getAllUrlsOfAuthUser = catchAsync(async function (request, response) {
+    const { userId } = request.user;
 
     const urls = await getAllUrlsByUserId(userId);
 
