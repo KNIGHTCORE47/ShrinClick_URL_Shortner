@@ -16,10 +16,6 @@ export default function LoginForm() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const auth = useSelector(state => state.auth);
-    console.log("from LoginForm isAuthenticated: ", auth);
-
-
-
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -32,12 +28,8 @@ export default function LoginForm() {
             // NOTE - Parse response
             const data = await response.json();
 
-            console.log("Login API Response:", data);
-
             // NOTE - Set Store Data
-            const user = dispatch(login(data.data));
-
-            console.log("from LoginForm user: ", user);
+            dispatch(login(data.data));
 
             // NOTE - Set Input Fields to Empty
             setEmail('');
@@ -60,8 +52,6 @@ export default function LoginForm() {
 
         }
     }
-
-
 
     return (
         <form
