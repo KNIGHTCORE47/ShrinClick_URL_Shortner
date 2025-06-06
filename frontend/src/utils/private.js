@@ -44,16 +44,11 @@ export async function isPrivateRoute({ context }) {
                 retry: false
             })
 
-        console.log("Check-Auth API Response:", data.data);
-
-
         if (!data?.data) return false;
 
         store.dispatch(login(data.data));
 
         const auth = store.getState().auth;
-
-        console.log("from isPrivateRoute auth: ", auth);
 
         if (!auth.isAuthenticated) return false;
 
