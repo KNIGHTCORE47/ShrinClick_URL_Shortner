@@ -1,6 +1,6 @@
 import {
     saveShortUrl,
-    redirectFromShortUrl,
+    redirectFromShortUrlDao,
     findShortUrlBySlug
 } from '../dao/url.dao.js';
 import {
@@ -56,7 +56,7 @@ export async function createShortUrlServiceWithUserId(url, userId, slug = null) 
 
 
 export async function redirectFromShortUrlService(id) {
-    const url = await redirectFromShortUrl(id);
+    const url = await redirectFromShortUrlDao(id);
 
     // NOTE - Check for valid Short URL [security]
     if (!url) {
