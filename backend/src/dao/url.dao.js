@@ -35,7 +35,7 @@ export const saveShortUrl = async function (url, randomStringOfShortUrl, userId)
 }
 
 
-export const redirectFromShortUrl = async function (id) {
+export const redirectFromShortUrlDao = async function (id) {
     // NOTE - Find and update Short URL [DB Query]
     const urlResponse = await urlModel.findOneAndUpdate({ shortUrl: id }, {
         $inc: { clicks: 1 }
