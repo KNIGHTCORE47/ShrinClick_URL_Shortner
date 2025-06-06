@@ -2,6 +2,7 @@ import React from 'react'
 import { Loader2, CircleCheck } from 'lucide-react';
 import { fetchShortUrl } from '../apis/apiCalls.js';
 import { useSelector } from 'react-redux';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function URLForm() {
 
@@ -12,10 +13,8 @@ export default function URLForm() {
     const [customSlug, setCustomSlug] = React.useState('');
     const [isCopied, setIsCopied] = React.useState(false);
 
+    const queryClient = useQueryClient();
     const auth = useSelector(state => state.auth);
-    console.log("from URLForm isAuthenticated: ", auth.isAuthenticated);
-
-
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -32,14 +31,13 @@ export default function URLForm() {
         try {
             const response = await fetchShortUrl(longURL, customSlug);
 
-            // NOTE - 
-
             // NOTE - Set Data
             const data = await response.json();
 
-            console.log("Short URL API Response:", data.data);
-
             setShortURL(data?.data);
+
+            // NOTE - Funtionality of re-fetching new created short url [tanstack query]
+            await queryClient.invalidateQueries(['all-urls']);
 
         } catch (error) {
             console.error("Internal server error, Please try again sometime.", error);
@@ -141,7 +139,6 @@ export default function URLForm() {
                                 onChange={event => setCustomSlug(event.target.value)}
                                 className='w-full pl-8 pr-4 py-3 border-2 border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-blue-400 focus:outline-none transition-all duration-200 text-gray-700 placeholder-gray-400 shadow-sm hover:shadow-md focus:shadow-lg'
                                 placeholder='custom-url'
-                                required
                             />
                             <div
                                 className='absolute inset-0 rounded-xl bg-gradient-to-r from-blue-400/10 to-purple-400/10 opacity-0 group-focus-within:opacity-100 transition-opacity duration-300 pointer-events-none'
