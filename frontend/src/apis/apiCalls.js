@@ -11,6 +11,20 @@ export function fetchShortUrl(url, slug = null) {
     }, 'v1');
 }
 
+export async function fatchAllUrlsOfAuthUser() {
+    const response = await fetchInstance('all-urls', {
+        method: 'GET',
+    }, 'v1');
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to fetch URLs');
+    }
+
+    return await response.json();
+}
+
+
 // NOTE - Auth APIs
 export async function checkAuth() {
     const response = await fetchInstance('check-auth', {
